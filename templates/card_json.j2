@@ -1,0 +1,35 @@
+{#-
+    inputs
+    card - Card
+#}
+{%- macro populate_face(face) %}
+        "name": {{ face.name |tojson }},
+        "cmc": "{{ face.cmc }}",
+        "cc": "{{ face.cc }}",
+        "type_line": "{{ face.type_line }}",
+        "power": "{{ face.power}}",
+        "toughness": "{{ face.toughness }}",
+        "text_box": {{ face.text_box | tojson }}
+{%- endmacro %}
+{
+    "scryfall_id": "{{ card.scryfall_id }}",
+    "front": {
+        {{ populate_face(card.front) }}
+    },
+    {%- if card.is_mdfc() %}
+    "back": {
+        {{ populate_face(card.back) }}
+    },
+    {%- else %}
+    "back": null,
+    {%- endif %}
+    {%- if card.has_related() %}
+    "related_cards": [
+        {%- for id in card.related_cards %}
+        "{{ id }}"{%- if not loop.last %},{%- endif %}
+        {%- endfor %}
+    ]
+    {%- else %}
+    "related_cards": []
+    {%- endif %}
+}

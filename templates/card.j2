@@ -1,0 +1,19 @@
+{#-
+inputs:
+    card - Card
+#}
+{{- "%-20s" | format(card.front.name) }} {{ "%20s" | format(card.front.cc) }}
+
+{{ card.front.type_line | wordwrap(width=40)  }}
+{{ card.front.text_box | wordwrap(width=40) }}
+{{ "%40s" | format(card.front.power) }}/{{ card.front.toughness }}
+{%- if card.is_mdfc() %}
+///
+{{ card.back.name }}
+
+{{ card.back.type_line | wordwrap(width=40)  }}
+{{ card.back.text_box | wordwrap(width=40) }}
+    {%- if card.back.is_creature() %}
+{{ "%40s" | format(card.back.power) }}/{{ card.back.toughness }}
+    {%- endif %}
+{%- endif %}
