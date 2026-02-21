@@ -2,6 +2,7 @@ import json
 import os
 import requests
 import random
+import subprocess
 from card import *
 
 SCRYFALL_BASE_API_URL = "https://api.scryfall.com"
@@ -174,8 +175,17 @@ def populate_related_data(id_list):
     return ret_dict
 
 def print_list(input_list):
+    temp_file_path = os.path.join(os.path.dirname(__file__), 'downloaded_files', 'print_me.txt')
+    
     for item in input_list:
-        print(item)
+        with open(temp_file_path, 'w', encoding='utf-16') as file:
+            file.write(item)
+        subprocess.run([
+            "lp",
+            "-d",
+            "receipt_printer",
+            temp_file_path
+        ])
 
 def refresh_data(all_creature_cards_filepath, related_cards_filepath):
     all_creature_cards = load_all_cards()
@@ -242,7 +252,16 @@ def print_momir(input_num, do_refresh):
     list_choice_num = random.randint(0, len(valid_creatures) - 1)
 
     chosen_creature = valid_creatures[list_choice_num]
-    print(chosen_creature.print_card())
+    
+    temp_file_path = os.path.join(os.path.dirname(__file__), 'downloaded_files', 'print_me.txt')
+    with open(temp_file_path, 'w', encoding='utf-16') as file:
+        file.write(chosen_creature.print_card())
+    subprocess.run([
+        "lp",
+        "-d",
+        "receipt_printer",
+        temp_file_path
+    ])
     print_list(chosen_creature.print_related(related_cards))
 
 
