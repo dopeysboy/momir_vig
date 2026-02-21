@@ -1,0 +1,11 @@
+<html>
+	<body>
+		<form method="post" action="{{ url_for('momir_print') }}">
+			<label for="input_num">Input Number:</label>
+			<input id="input_num" name="input_num" type="number"><br>
+			<label for="do_refresh_data">Refresh Data?</label>
+			<input id="do_refresh_data" name="do_refresh_data" type="checkbox"><br>
+			<input type="submit" value="Submit">
+		</form>
+	</body>
+</html>
